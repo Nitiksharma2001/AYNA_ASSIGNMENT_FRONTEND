@@ -8,78 +8,76 @@ interface MessageType {
   username: string
   __createdtime__: number
 }
+interface AllChatsType {
+  roomId: string
+  messages: MessageType[]
+}
 
 export default function useSocket() {
-  const tempMessages: MessageType[] = [
-    {
-      message: 'hi',
-      username: 'nitiksharma',
-      __createdtime__: Date.now()
-    },
-    {
-      message: 'hello',
-      username: 'khushisharma',
-      __createdtime__: Date.now()
-    },
-    {
-      message: 'hey',
-      username: 'nitiksharma',
-      __createdtime__: Date.now()
-    },
-    {
-      message: 'whatsup',
-      username: 'khushisharma',
-      __createdtime__: Date.now()
-    }
-
-  ]
   const [isConnected, setIsConnected] = useState(false)
   const [searchParams] = useSearchParams()
   const [messagesRecieved, setMessagesReceived] = useState<MessageType[]>([])
   const { user } = useContext(ChatContext) as ContextType
 
   const room = searchParams.get('room_id')
-  
-  useEffect(() => {
-    function onConnect() {
-      socket.emit('join_room', {
-        username: user?.username,
-        room,
-      })
-      setIsConnected(true)
-    }
 
-    function onDisconnect() {
-      setIsConnected(false)
-    }
-
-    socket.connect()
-    socket.on('connect', onConnect)
-    socket.on('message', (data) => {
-      console.log('Received message:', data)
+  function onConnect() {
+    socket.emit('join_room', {
+      username: user.username,
+      room,
     })
-    socket.on('disconnect', onDisconnect)
+    setIsConnected(true)
+  }
 
-    socket.on('receive_message', (data: MessageType) => {
-      setMessagesReceived((state) => [
+  function onDisconnect() {
+    setIsConnected(false)
+  }
+
+  function onMessageReceived(data: MessageType) {
+    setMessagesReceived((state) => {
+      const newChats = [
         ...state,
         {
           message: data.message,
           username: data.username,
           __createdtime__: data.__createdtime__,
         },
-      ])
+      ]
+      localStorage.setItem('chat_history', JSON.stringify({roomId: room, messages: newChats}))
+      return newChats
     })
+  }
+
+  useEffect(() => {
+    if(!user) return 
+
+    socket.connect()
+
+    socket.on('connect', onConnect)
+    socket.on('disconnect', onDisconnect)
+    socket.on('receive_message', onMessageReceived)
+
+    const chatHistory = localStorage.getItem('chat_history')
+
+    if (chatHistory) {
+      const chats = JSON.parse(chatHistory) as AllChatsType
+
+      if (chats.roomId === room) {
+        setMessagesReceived(chats.messages)
+      } else {
+        localStorage.removeItem('chat_history')
+      }
+    }
 
     return () => {
       socket.off('connect', onConnect)
       socket.off('disconnect', onDisconnect)
     }
-  }, [])
+  }, [user, room])
   return {
     socket,
     isConnected,
     messagesRecieved,
-    setMessagesReceived
+    setMessagesReceived,
   }
 }
