@@ -23,7 +23,7 @@ export default function useSocket() {
 
   function onConnect() {
     socket.emit('join_room', {
-      username: user.username,
+      username: user?.username,
       room,
     })
     setIsConnected(true)

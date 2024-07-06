@@ -10,7 +10,7 @@ export default function Chat() {
   const { socket, isConnected, messagesRecieved, setMessagesReceived } = useSocket()
   const [searchParams] = useSearchParams()
   const room = searchParams.get('room_id')
-
+  isConnected
   const sendMessage = () => {
     if (!user) return
 
