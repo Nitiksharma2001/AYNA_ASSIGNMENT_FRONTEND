@@ -27,7 +27,7 @@ export default function SignUp() {
     const email = emailRef.current?.value
     const password = passwordRef.current?.value
     const { data }: { data: LoginResponseType } = await axios.post(
-      'http://localhost:1337/api/auth/local/register',
+      process.env.REACT_APP_BACKEND_URL + '/api/auth/local/register',
       {
         username,
         email,

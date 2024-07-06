@@ -25,7 +25,7 @@ export default function SignIn() {
     const email = emailRef.current?.value
     const password = passwordRef.current?.value
     const { data }: { data: LoginResponseType } = await axios.post(
-      'http://localhost:1337/api/auth/local/',
+      process.env.REACT_APP_BACKEND_URL + '/api/auth/local/',
       {
         identifier: email,
         password,
