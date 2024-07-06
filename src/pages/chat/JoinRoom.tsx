@@ -1,34 +1,24 @@
-import { useContext } from 'react'
+import { useRef } from 'react'
 import Index from '../Index'
-import { ContextType, ChatContext } from '../../context/Context'
-import { Link } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 export default function JoinRoom() {
-  const { room, user, setUser, setRoom } = useContext(ChatContext) as ContextType
+  const roomRef = useRef<HTMLInputElement | null>(null)
+  const navigate = useNavigate()
+
   return (
-    <Index>
-      <section className='flex flex-col gap-4'>
-        <label className='input input-bordered flex items-center gap-2'>
-          Username
-          <input
-            type='text'
-            value={user}
-            onChange={(e) => setUser(e.target.value)}
-            className='grow'
-            placeholder='eg.. asdfasdfsd'
-          />
-        </label>
+    <Index linkRoute='sign-in'>
+      <section className='flex flex-col gap-4 w-1/3'>
         <label className='input input-bordered flex items-center gap-2'>
           Room
-          <input
-            type='text'
-            value={room}
-            onChange={(e) => setRoom(e.target.value)}
-            className='grow'
-            placeholder='eg.. asdfasdfsd'
-          />
+          <input ref={roomRef} type='text' className='grow' placeholder='eg.. asdfasdfsd' />
         </label>
-        <Link to='/' className='btn btn-primary'>Join Room</Link>
+        <button
+          className='btn btn-primary'
+          onClick={() => navigate(`/chat?room_id=${roomRef.current!.value}`)}
+        >
+          Join Room
+        </button>
       </section>
     </Index>
   )
