@@ -43,7 +43,7 @@ export default function SignIn() {
 
   return (
     <Index linkRoute='sign-up'>
-      <section className='flex flex-col w-1/3 gap-8'>
+      <section className='flex flex-col md:w-1/3 gap-8'>
         <label className='input input-bordered flex items-center gap-2'>
           email
           <input ref={emailRef} type='text' className='grow' placeholder='eg.. nitiksharma' />

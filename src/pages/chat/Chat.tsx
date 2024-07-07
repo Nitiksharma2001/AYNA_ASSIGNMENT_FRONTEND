@@ -33,11 +33,10 @@ export default function Chat() {
   return (
     <Index linkRoute='join-room'>
       {user ? (
-        <section className='flex flex-col gap-4 justify-between h-full'>
+        <section className='flex flex-col gap-4 justify-between h-full px-4'>
           <div className='flex flex-col gap-4'>
-            <p className='text-3xl font-bold'>
-              Hello {`@${user?.username} you have joined the room ${room}`}
-            </p>
+            <p className='md:text-3xl text-2xl font-bold text-center'>Hello {`@${user?.username}`}</p>
+            <p className='md:text-3xl text-xl font-bold text-center'>you have joined the room ${room}</p>
             <main className='flex flex-col gap-4'>
               {messagesRecieved.map((message, index) => {
                 return (

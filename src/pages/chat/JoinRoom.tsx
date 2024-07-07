@@ -8,7 +8,7 @@ export default function JoinRoom() {
 
   return (
     <Index linkRoute='sign-in'>
-      <section className='flex flex-col gap-4 w-1/3'>
+      <section className='flex flex-col gap-4 md:w-1/3'>
         <label className='input input-bordered flex items-center gap-2'>
           Room
           <input ref={roomRef} type='text' className='grow' placeholder='eg.. asdfasdfsd' />

@@ -46,7 +46,7 @@ export default function SignUp() {
 
   return (
     <Index linkRoute='sign-in'>
-      <section className='flex flex-col gap-8 w-1/3'>
+      <section className='flex flex-col gap-8 md:w-1/3'>
         <label className='input input-bordered flex items-center gap-2'>
           username
           <input ref={usernameRef} type='text' className='grow' placeholder='eg.. nitiksharma' />
