@@ -5,4 +5,5 @@ const URL = import.meta.env.VITE_BACKEND_URL
 
 export const socket = io(URL, {
   autoConnect: false,
+  transports: ['websocket']
 })
